@@ -58,12 +58,12 @@ for entry in reversed(feed.entries):
         # Print the extracted information
         print(f"Title: {title}  Link: {link}")
 
-        extralen = len(title) + len(link) + 4
+        extralen = len(title) + len(link) + 9
 
-        if len(description) > 498-extralen:
-            description = description[:495-extralen] + " [\u2026]"
+        if len(description) > 499-extralen:
+            description = description[:498-extralen] + " [\u2026]"
 
-        body = f"{title}\n\n{description}\n\n{link}"
+        body = f"{title} \u2014 {description}\n\n{link}"
         response = mastodon.status_post(body)
 
         # Check the response status code
