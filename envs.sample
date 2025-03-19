@@ -1,0 +1,12 @@
+# Copy to "envs" and fill in.
+
+# The Pinboard feed to gateway from
+export feed_url="https://feeds.pinboard.in/rss/u:jm/"
+
+# Your Mastodon instance
+export instance="https://mstdn.social"
+
+# go to https://mstdn.social/settings/applications, click on your app, and
+# paste the "Your access token" field here:
+export access_token='B...............deleted..................o'
+

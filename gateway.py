@@ -2,24 +2,16 @@
 #
 # Gateway from pinboard.in to Mastodon
 
-# Fill in your auth details here (TODO move to an "env" file)
-
-# go to https://mstdn.social/settings/applications, click on your app, and
-# paste the "Your access token" field here
-access_token = "B...............omitted.....................x"
-
-# The Pinboard feed to gateway from
-feed_url = "https://feeds.pinboard.in/rss/u:jm/"
-
-instance = "https://mstdn.social"
-
-# ------------------
-
 import feedparser
 import sqlite3
 import re
+import os
 from datetime import datetime, timedelta
 from mastodon import Mastodon
+
+access_token = os.environ['access_token']
+feed_url = os.environ['feed_url']
+instance = os.environ['instance']
 
 mastodon = Mastodon(
         access_token=access_token,
@@ -47,8 +39,10 @@ for entry in reversed(feed.entries):
     description = entry.description
 
     # strip HTML tags
-    description = re.sub(r'</?blockquote>', '\"', description)
+    description = re.sub(r'(?si)<blockquote>\s*', '\"', description)
+    description = re.sub(r'(?si)\s*</blockquote>', '\"', description)
     description = re.sub(r'</?[A-Za-z]*>', '', description)
+    description = re.sub(r'(?si)\n\n+', '\n', description)
 
     # Check if the item has already been processed
     c.execute('SELECT * FROM processed_items WHERE link = ?', (link,))
